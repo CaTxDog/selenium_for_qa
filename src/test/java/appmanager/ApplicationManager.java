@@ -3,15 +3,15 @@ package appmanager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.ProfilesIni;
+import org.openqa.selenium.firefox.*;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.manager.SeleniumManagerOutput;
+import org.openqa.selenium.remote.service.DriverFinder;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.remote.Browser;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -42,8 +42,11 @@ public class ApplicationManager {
       prof.setPreference("browser.download.dir","C:\\Developer\\selenium_for_qa");
       prof.setPreference("browser.download.folderList", 2);
       FirefoxOptions opt = new FirefoxOptions();
-      opt.setProfile(prof);
-      driver = new FirefoxDriver();
+      //opt.setProfile(prof);
+      opt.setBrowserVersion("nightly");
+      SeleniumManagerOutput.Result output = DriverFinder.getPath(GeckoDriverService.createDefaultService(), opt);
+      opt.setBinary(Path.of(output.getBrowserPath()));
+      driver = new FirefoxDriver(opt);
     } else if (browser.equals(Browser.CHROME.browserName())) {
       driver = new ChromeDriver();
     } else if (browser.equals(Browser.EDGE.browserName())){
@@ -64,4 +67,13 @@ public class ApplicationManager {
   public MainPageHelper mainPage() {
     return mainPageHelper;
   }
+
+  private Path getFirefoxLocation() {
+    FirefoxOptions options = new FirefoxOptions();
+    options.setBrowserVersion("nightly");
+    SeleniumManagerOutput.Result output =
+            DriverFinder.getPath(GeckoDriverService.createDefaultService(), options);
+    return Path.of(output.getBrowserPath());
+  }
+
 }

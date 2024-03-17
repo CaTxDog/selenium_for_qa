@@ -1,8 +1,6 @@
 package tests;
 
 import appmanager.ApplicationManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.Browser;
 
 public class TestBase {
