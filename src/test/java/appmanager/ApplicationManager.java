@@ -43,7 +43,7 @@ public class ApplicationManager {
       prof.setPreference("browser.download.folderList", 2);
       FirefoxOptions opt = new FirefoxOptions();
       opt.setProfile(prof);
-      driver = new ChromeDriver();
+      driver = new FirefoxDriver();
     } else if (browser.equals(Browser.CHROME.browserName())) {
       driver = new ChromeDriver();
     } else if (browser.equals(Browser.EDGE.browserName())){
