@@ -10,17 +10,18 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/junit/junit
-    testImplementation("junit:junit:4.13.2")
 
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
-
-    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.seleniumhq.selenium:selenium-java:4.18.1")
+
 
 }
 
 tasks.test {
-   useJUnitPlatform()
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }

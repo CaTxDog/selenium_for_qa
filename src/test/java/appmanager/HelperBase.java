@@ -16,6 +16,10 @@ public class HelperBase {
     driver.findElement(locator).click();
   }
 
+  protected String isOnPage(By locator){
+    return driver.findElement(locator).getText();
+  }
+
   protected void type(By locator, String text) {
     click(locator);
     if (text != null) {
@@ -27,13 +31,13 @@ public class HelperBase {
     }
   }
 
-  protected boolean isElementPresent(By locator) {
+/*  protected boolean isElementPresent(By locator) {
     try{
       driver.findElement(locator);
       return true;
     } catch (NoSuchElementException ex) {
       return false;
     }
-  }
+  }*/
 
 }

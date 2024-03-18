@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.*;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.manager.SeleniumManagerOutput;
 import org.openqa.selenium.remote.service.DriverFinder;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class ApplicationManager {
   private SessionHelper sessionHelper;
 
-  private MainPageHelper mainPageHelper;
+  private AdminPageHelper adminPageHelper;
 
   private final Properties properties;
   WebDriver driver;
@@ -56,7 +55,7 @@ public class ApplicationManager {
     driver.get(properties.getProperty("web.baseUrl"));
     sessionHelper = new SessionHelper(driver);
     sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
-    mainPageHelper = new MainPageHelper(driver);
+    adminPageHelper = new AdminPageHelper(driver);
   }
 
   public void stop() {
@@ -64,8 +63,8 @@ public class ApplicationManager {
     driver.quit();
   }
 
-  public MainPageHelper mainPage() {
-    return mainPageHelper;
+  public AdminPageHelper adminPage() {
+    return adminPageHelper;
   }
 
   private Path getFirefoxLocation() {

@@ -1,16 +1,18 @@
 package tests;
 
-import org.junit.Assert;
-import org.junit.Test;
+import appmanager.ReplaceCamelCase;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.openqa.selenium.By;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
+@DisplayNameGeneration(ReplaceCamelCase.class)
 public class TestForLitecart extends TestBase {
   @Test
-  @DisplayName("Тест логина")
   public void login() throws Exception {
-    setUp();
-    Assert.assertTrue(app.mainPage().successfulLoadPage());
-    tearDown();
+    assertTrue(app.adminPage().isElementPresent(By.xpath("//*[@title=\"My Store\"]")));
   }
 }

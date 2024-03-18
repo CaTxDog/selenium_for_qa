@@ -1,18 +1,22 @@
 package tests;
 
 import appmanager.ApplicationManager;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.Browser;
 
 public class TestBase {
 
-  public static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", Browser.FIREFOX.browserName()));
+  public static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", Browser.CHROME.browserName()));
 
 
-  public void setUp() throws Exception {
+  @BeforeAll
+  public static void setUp() throws Exception {
     app.init();
   }
 
-  public void tearDown() throws Exception {
+  @AfterAll
+  public static void tearDown() throws Exception {
     app.stop();
   }
 
