@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 
 @DisplayNameGeneration(ReplaceCamelCase.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
-public class AdminPageTest extends TestBase{
+public class AdminPageTestsMenu extends TestBaseAdmin {
 
 
   @Test

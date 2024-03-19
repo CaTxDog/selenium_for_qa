@@ -31,13 +31,8 @@ public class HelperBase {
     }
   }
 
-/*  protected boolean isElementPresent(By locator) {
-    try{
-      driver.findElement(locator);
-      return true;
-    } catch (NoSuchElementException ex) {
-      return false;
-    }
+/*  protected void countMostPopular (){
+    driver.findElement(By.xpath("div[3]/div/ul/li[1]")).getSize();
   }*/
 
 }

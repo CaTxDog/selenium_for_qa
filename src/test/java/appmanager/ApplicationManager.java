@@ -19,15 +19,25 @@ public class ApplicationManager {
 
   private AdminPageHelper adminPageHelper;
 
+  private ShopPageHelper shopPageHelper;
+
   private final Properties properties;
   WebDriver driver;
   WebDriverWait wait;
   private String browser;
+  private Boolean admin;
 
 
-  public ApplicationManager(String browser) {
+  public ApplicationManager(String browser, Boolean admin) {
         this.browser = browser;
         properties = new Properties();
+        this.admin = admin;
+  }
+
+  public ApplicationManager(String browser) {
+    this.browser = browser;
+    properties = new Properties();
+    admin = true;
   }
 
   public void init() throws IOException {
@@ -41,7 +51,6 @@ public class ApplicationManager {
       prof.setPreference("browser.download.dir","C:\\Developer\\selenium_for_qa");
       prof.setPreference("browser.download.folderList", 2);
       FirefoxOptions opt = new FirefoxOptions();
-      //opt.setProfile(prof);
       opt.setBrowserVersion("nightly");
       SeleniumManagerOutput.Result output = DriverFinder.getPath(GeckoDriverService.createDefaultService(), opt);
       opt.setBinary(Path.of(output.getBrowserPath()));
@@ -52,10 +61,17 @@ public class ApplicationManager {
       driver = new EdgeDriver();
     }
     driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
-    driver.get(properties.getProperty("web.baseUrl"));
-    sessionHelper = new SessionHelper(driver);
-    sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
-    adminPageHelper = new AdminPageHelper(driver);
+
+    if (admin==true){
+      driver.get(properties.getProperty("web.adminUrl"));
+      sessionHelper = new SessionHelper(driver);
+      sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
+      adminPageHelper = new AdminPageHelper(driver);
+    } else {
+      driver.get(properties.getProperty("web.shopUrl"));
+      sessionHelper = new SessionHelper(driver);
+      shopPageHelper = new ShopPageHelper(driver);
+    }
   }
 
   public void stop() {
@@ -63,8 +79,16 @@ public class ApplicationManager {
     driver.quit();
   }
 
+  public void stop(String text) {
+    driver.quit();
+  }
+
   public AdminPageHelper adminPage() {
     return adminPageHelper;
+  }
+
+  public ShopPageHelper shopPade(){
+    return shopPageHelper;
   }
 
   private Path getFirefoxLocation() {
