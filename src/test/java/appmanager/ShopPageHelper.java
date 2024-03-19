@@ -1,9 +1,8 @@
 package appmanager;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,32 +36,19 @@ public class ShopPageHelper extends HelperBase{
     assertTrue(title.equals(isOnPage(By.xpath("//h1"))));
   }
 
-  public int countMostPopular (){
-    int i = 0;
-    boolean isExist = false;
-    do { if (!driver.findElements(By.xpath("/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[3]/div/ul/li["+i+"]")).isEmpty()==true){
-      i++;
-      isExist=true;
-    } else isExist=false;
+  public boolean onlyOneStickerExist (){
+    // Находим все элементы товаров на странице
+    List<WebElement> products = driver.findElements(By.className("product"));
 
-    } while (isExist==true);
-    return i;
-  }
+    for (WebElement product : products) {
 
-  public boolean stickersExist (int count){
-    boolean exist = true;
-    for (int i=0;i<count;i++){
-      if (!driver.findElements(By.xpath("/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[3]/div/ul/li["+i+"]/a[1]/div[1]/div[1]")).isEmpty()) {
-        if(driver.findElements(By.xpath("/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[3]/div/ul/li["+i+"]/a[1]/div[1]/div[2]")).isEmpty()==false){
-          exist=false;
-          break;
-        }
-      } else {
-        exist=false;
-        break;
+      // Проверяем, что у каждого товара имеется ровно один стикер
+      List<WebElement> sticker = product.findElements(By.className("sticker"));
+      if (sticker.size() != 1) {
+        return false;
       }
     }
-    return exist;
+    return true;
   }
 
 

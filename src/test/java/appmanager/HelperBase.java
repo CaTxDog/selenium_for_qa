@@ -31,8 +31,4 @@ public class HelperBase {
     }
   }
 
-/*  protected void countMostPopular (){
-    driver.findElement(By.xpath("div[3]/div/ul/li[1]")).getSize();
-  }*/
-
 }

@@ -11,7 +11,7 @@ public class ShopPageTest extends TestBaseShop{
 
 
   @Test
-  public void testExistStickers(){
-    assertTrue(app.shopPade().stickersExist(app.shopPade().countMostPopular()));
+  public void allDucksHaveOneSticker(){
+    assertTrue(app.shopPade().onlyOneStickerExist());
   }
 }
