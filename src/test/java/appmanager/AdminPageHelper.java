@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -180,4 +181,51 @@ public class AdminPageHelper extends HelperBase{
     return true;
   }
 
+  public boolean geoZonesSort() {
+    // Открытие страницы
+    driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+    // Находим строки таблицы
+    List<WebElement> geoZonesRows = driver.findElements(By.xpath("//tr[@class='row']"));
+
+    // Создаем список для хранения ссылок на страны
+    List<String> countryLinks = new ArrayList<>();
+
+    // Перебираем строки таблицы
+    for (WebElement row : geoZonesRows) {
+
+        WebElement geoLink = row.findElement(By.xpath("./td[3]/a"));
+        countryLinks.add(geoLink.getAttribute("href"));
+    }
+
+    // Перебираем список ссылок и проверяем сортировку зон по алфавиту
+    for (String link : countryLinks) {
+      // Переходим по ссылке на страну
+      driver.get(link);
+
+      // Проверяем сортировку зон по алфавиту
+      List<WebElement> zoneNameCells = driver.findElements(By.xpath(".//tr[position()>1]/td[3]/select"));
+
+      // Создаем список названий зон
+      List<String> zoneNames = new ArrayList<>();
+      for (WebElement cell : zoneNameCells) {
+        Select zoneNameDropdown = new Select(cell);
+        String zoneName = zoneNameDropdown.getFirstSelectedOption().getText().trim();
+          zoneNames.add(zoneName);
+      }
+
+      // Создаем копию списка для проверки сортировки
+      List<String> sortedZoneNames = new ArrayList<>(zoneNames);
+
+      // Сортируем список
+      Collections.sort(sortedZoneNames);
+
+      // Проверяем сортировку
+      if (!zoneNames.equals(sortedZoneNames)) {
+        return false;
+      }
+      // Возвращаемся на страницу со странами
+      driver.navigate().back();
+    }
+    return true;
+  }
 }

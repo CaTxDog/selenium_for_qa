@@ -25,4 +25,11 @@ public class AdminPageTests extends TestBaseAdmin {
     assertTrue(app.adminPage().countryZonesSort());
   }
 
+  @Test
+  public void geoZoneSorted(){
+
+    assertTrue(app.adminPage().geoZonesSort());
+
+  }
+
 }
