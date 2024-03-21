@@ -14,4 +14,9 @@ public class ShopPageTest extends TestBaseShop{
   public void allDucksHaveOneSticker(){
     assertTrue(app.shopPade().onlyOneStickerExist());
   }
+
+  @Test
+  public void equalsProduct(){
+    assertTrue(app.shopPade().equalsProduct());
+  }
 }

@@ -7,7 +7,7 @@ import org.openqa.selenium.remote.Browser;
 
 public class TestBaseShop {
 
-  public static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", Browser.CHROME.browserName()),false);
+  public static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", Browser.EDGE.browserName()),false);
 
 
   @BeforeAll
