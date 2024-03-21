@@ -5,6 +5,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -95,5 +97,87 @@ public class AdminPageHelper extends HelperBase{
     return true;
   }
 
+  public boolean countrySorted() {
+
+    // Открытие веб-страницы с таблицей
+    driver.get("http://localhost/litecart/admin/?app=countries&doc=countries");
+
+    // Найти все элементы в столбце "Name"
+    List<WebElement> nameElements = driver.findElements(By.xpath("//table[@class='dataTable']//td[5]"));
+
+    // Создание списка для хранения текстовых значений из столбца "Name"
+    List<String> names = new ArrayList<>();
+
+    // Получение текстовых значений и добавление их в список
+    for (WebElement element : nameElements) {
+      names.add(element.getText());
+    }
+
+    // Создание копии списка для сортировки
+    List<String> sortedNames = new ArrayList<>(names);
+
+    // Сортировка копии списка
+    Collections.sort(sortedNames);
+
+    // Проверка, что значения в столбце упорядочены по алфавиту
+    if (!names.equals(sortedNames)) {
+      return false;
+    }
+    return true;
+  }
+
+  public boolean countryZonesSort() {
+    // Открытие страницы
+    driver.get("http://localhost/litecart/admin/?app=countries");
+    // Находим строки таблицы
+    List<WebElement> countryRows = driver.findElements(By.xpath("//tr[@class='row']"));
+
+    // Создаем список для хранения ссылок на страны зонами >0
+    List<String> countryLinks = new ArrayList<>();
+
+    // Перебираем строки таблицы
+    for (WebElement row : countryRows) {
+      // Получаем значение количества зон
+      int zoneCount = Integer.parseInt(row.findElement(By.xpath("./td[6]")).getText());
+
+      // Если количество зон больше 0, добавляем ссылку на страну в список
+      if (zoneCount > 0) {
+        WebElement countryLink = row.findElement(By.xpath("./td[5]/a"));
+        countryLinks.add(countryLink.getAttribute("href"));
+      }
+    }
+
+    // Перебираем список ссылок и проверяем сортировку зон по алфавиту
+    for (String link : countryLinks) {
+      // Переходим по ссылке на страну
+      driver.get(link);
+
+      // Проверяем сортировку зон по алфавиту
+      List<WebElement> zoneNameCells = driver.findElements(By.xpath(".//tr[position()>1]/td[3]"));
+
+      // Создаем список названий зон
+      List<String> zoneNames = new ArrayList<>();
+      for (WebElement cell : zoneNameCells) {
+        String zoneName = cell.getText().trim();
+        if (!zoneName.isEmpty()) {
+          zoneNames.add(zoneName);
+        }
+      }
+
+      // Создаем копию списка для проверки сортировки
+      List<String> sortedZoneNames = new ArrayList<>(zoneNames);
+
+      // Сортируем список
+      Collections.sort(sortedZoneNames);
+
+      // Проверяем сортировку
+      if (!zoneNames.equals(sortedZoneNames)) {
+        return false;
+      }
+      // Возвращаемся на страницу со странами
+      driver.navigate().back();
+    }
+    return true;
+  }
 
 }

@@ -2,8 +2,10 @@ package tests;
 
 
 import appmanager.ReplaceCamelCase;
-import org.junit.jupiter.api.*;
-
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,6 +17,12 @@ public class AdminPageTestsMenu extends TestBaseAdmin {
   @Test
   public void clickMenu(){
     assertTrue(app.adminPage().clickMenu());
+  }
+
+  @Test
+  public void countrySorted(){
+    assertTrue(app.adminPage().countrySorted());
+    assertTrue(app.adminPage().countryZonesSort());
   }
 
 }

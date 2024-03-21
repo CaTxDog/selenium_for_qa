@@ -2,7 +2,12 @@ package appmanager;
 
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class NavigationHelper extends HelperBase {
 
@@ -15,7 +20,25 @@ public class NavigationHelper extends HelperBase {
   }
 
   public void succsessLoadPage(){
+  }
 
+  // Метод для открытия ссылки в новой вкладке
+  public static void openNewTab(WebDriver driver, String url) {
+    ((JavascriptExecutor)driver).executeScript("window.open(arguments[0])", url);
+  }
+
+  // Метод для переключения на новую вкладку
+  public static void switchToNewTab(WebDriver driver) {
+    Set<String> handles = driver.getWindowHandles();
+    List<String> tabs = new ArrayList<>(handles);
+    driver.switchTo().window(tabs.getLast());
+  }
+
+  // Метод для переключения на основную вкладку
+  public static void switchToMainTab(WebDriver driver) {
+    Set<String> handles = driver.getWindowHandles();
+    List<String> tabs = new ArrayList<>(handles);
+    driver.switchTo().window(tabs.getFirst());
   }
 
 

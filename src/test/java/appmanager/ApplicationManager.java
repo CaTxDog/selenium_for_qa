@@ -5,9 +5,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.*;
 import org.openqa.selenium.manager.SeleniumManagerOutput;
+import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.remote.service.DriverFinder;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.remote.Browser;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
