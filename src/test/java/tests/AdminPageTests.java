@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayNameGeneration(ReplaceCamelCase.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
-public class AdminPageTestsMenu extends TestBaseAdmin {
+public class AdminPageTests extends TestBaseAdmin {
 
 
   @Test
