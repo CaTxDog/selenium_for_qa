@@ -1,23 +1,26 @@
 package appmanager;
 
+import model.AccountData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ShopPageHelper extends HelperBase{
+public class ShopPageHelper extends HelperBase {
 
   public ShopPageHelper(WebDriver driver) {
     super(driver);
   }
 
   public boolean isElementPresent(By locator) {
-    try{
+    try {
       driver.findElement(locator);
       return true;
     } catch (NoSuchElementException ex) {
@@ -25,22 +28,22 @@ public class ShopPageHelper extends HelperBase{
     }
   }
 
-  public void goTo(String namePage){
+  public void goTo(String namePage) {
 
-    click(By.xpath("//span[text()='"+namePage+"']"));
+    click(By.xpath("//span[text()='" + namePage + "']"));
   }
 
-  public void goToSubPage(String namePage){
-    click(By.xpath("//span[text()='"+namePage+"']"));
+  public void goToSubPage(String namePage) {
+    click(By.xpath("//span[text()='" + namePage + "']"));
     assertTrue(namePage.equals(isOnPage(By.xpath("//h1"))));
   }
 
-  public void goToSubPage(String namePage, String title){
-    click(By.xpath("//span[text()='"+namePage+"']"));
+  public void goToSubPage(String namePage, String title) {
+    click(By.xpath("//span[text()='" + namePage + "']"));
     assertTrue(title.equals(isOnPage(By.xpath("//h1"))));
   }
 
-  public boolean onlyOneStickerExist (){
+  public boolean onlyOneStickerExist() {
     // Находим все элементы товаров на странице
     List<WebElement> products = driver.findElements(By.className("product"));
 
@@ -56,21 +59,21 @@ public class ShopPageHelper extends HelperBase{
   }
 
 
-  public boolean equalsProduct (){
+  public boolean equalsProduct() {
     // Находим все элементы товаров на странице
 
     WebElement product = driver.findElement(By.cssSelector("#box-campaigns > div > ul > li:first-child"));
     String name = product.findElement(By.cssSelector(".name")).getText();
 
     // Находим элемент с обычной ценой
-    WebElement regularPrice  = product.findElement(By.cssSelector(".regular-price"));
+    WebElement regularPrice = product.findElement(By.cssSelector(".regular-price"));
     // Получаем значение
     String grayPrice = regularPrice.getText();
     // Проверяем, зачеркнут ли текст
     String textDecoration = regularPrice.getCssValue("text-decoration");
     boolean isStrikethrough = textDecoration.contains("line-through");
     //Получаем размер текста
-    String regularPriceFontSizeString = (regularPrice.getCssValue("font-size")).substring(0,(regularPrice.getCssValue("font-size")).length()-2);
+    String regularPriceFontSizeString = (regularPrice.getCssValue("font-size")).substring(0, (regularPrice.getCssValue("font-size")).length() - 2);
     Double regularPriceFontSize = Double.parseDouble(regularPriceFontSizeString);
     // Получаем цвет текста
     String colorValue = regularPrice.getCssValue("color");
@@ -79,11 +82,11 @@ public class ShopPageHelper extends HelperBase{
     boolean isGray = greyColor.getColor().getRed() == greyColor.getColor().getGreen() && greyColor.getColor().getGreen() == greyColor.getColor().getBlue();
 
     // Находим элемент с акционной ценой
-    WebElement campaignPrice  = product.findElement(By.cssSelector(".campaign-price"));
+    WebElement campaignPrice = product.findElement(By.cssSelector(".campaign-price"));
     // Получаем значение
     String redPrice = campaignPrice.getText();
     //Получаем размер акционной цены
-    String campaignPriceFontSizeString = (campaignPrice.getCssValue("font-size")).substring(0,(campaignPrice.getCssValue("font-size")).length()-2);
+    String campaignPriceFontSizeString = (campaignPrice.getCssValue("font-size")).substring(0, (campaignPrice.getCssValue("font-size")).length() - 2);
     Double campaignPriceFontSize = Double.parseDouble(campaignPriceFontSizeString);
     // Проверяем на жирность
     String fontWeight = campaignPrice.getCssValue("font-weight");
@@ -91,7 +94,7 @@ public class ShopPageHelper extends HelperBase{
     // Проверяем цвет текста
     String campaignPriceColorValue = campaignPrice.getCssValue("color");
     Color redColor = Color.fromString(campaignPriceColorValue);
-    boolean isRed = redColor.getColor().getBlue()==0 && redColor.getColor().getGreen()==0;
+    boolean isRed = redColor.getColor().getBlue() == 0 && redColor.getColor().getGreen() == 0;
     //Проверяем размер текста
     boolean isFontSize = regularPriceFontSize < campaignPriceFontSize;
     //Переходим на страницу товара
@@ -102,14 +105,14 @@ public class ShopPageHelper extends HelperBase{
     // Находим наименование товара
     String nameNew = product.findElement(By.cssSelector(".title")).getText();
     // Находим элемент с обычной ценой
-    WebElement regularPriceNew  = product.findElement(By.cssSelector(".regular-price"));
+    WebElement regularPriceNew = product.findElement(By.cssSelector(".regular-price"));
     // Получаем значение
     String grayPriceNew = regularPriceNew.getText();
     // Проверяем, зачеркнут ли текст
     String textDecorationNew = regularPriceNew.getCssValue("text-decoration");
     boolean isStrikethroughNew = textDecorationNew.contains("line-through");
     //Получаем размер текста
-    String regularPriceFontSizeStringNew = (regularPriceNew.getCssValue("font-size")).substring(0,(regularPriceNew.getCssValue("font-size")).length()-2);
+    String regularPriceFontSizeStringNew = (regularPriceNew.getCssValue("font-size")).substring(0, (regularPriceNew.getCssValue("font-size")).length() - 2);
     Double regularPriceFontSizeNew = Double.parseDouble(regularPriceFontSizeStringNew);
     // Получаем цвет текста
     String colorValueNew = regularPriceNew.getCssValue("color");
@@ -118,11 +121,11 @@ public class ShopPageHelper extends HelperBase{
     boolean isGrayNew = greyColorNew.getColor().getRed() == greyColorNew.getColor().getGreen() && greyColorNew.getColor().getGreen() == greyColorNew.getColor().getBlue();
 
     // Находим элемент с акционной ценой
-    WebElement campaignPriceNew  = product.findElement(By.cssSelector(".campaign-price"));
+    WebElement campaignPriceNew = product.findElement(By.cssSelector(".campaign-price"));
     // Получаем значение
     String redPriceNew = campaignPriceNew.getText();
     //Получаем размер акционной цены
-    String campaignPriceFontSizeStringNew = (campaignPriceNew.getCssValue("font-size")).substring(0,(campaignPriceNew.getCssValue("font-size")).length()-2);
+    String campaignPriceFontSizeStringNew = (campaignPriceNew.getCssValue("font-size")).substring(0, (campaignPriceNew.getCssValue("font-size")).length() - 2);
     Double campaignPriceFontSizeNew = Double.parseDouble(campaignPriceFontSizeStringNew);
     // Проверяем на жирность
     String fontWeightNew = campaignPriceNew.getCssValue("font-weight");
@@ -130,24 +133,128 @@ public class ShopPageHelper extends HelperBase{
     // Проверяем цвет текста
     String campaignPriceColorValueNew = campaignPriceNew.getCssValue("color");
     Color redColorNew = Color.fromString(campaignPriceColorValueNew);
-    boolean isRedNew = redColorNew.getColor().getBlue()==0 && redColorNew.getColor().getGreen()==0;
+    boolean isRedNew = redColorNew.getColor().getBlue() == 0 && redColorNew.getColor().getGreen() == 0;
     //Проверяем размер текста
     boolean isFontSizeNew = regularPriceFontSizeNew < campaignPriceFontSizeNew;
 
     if (name.equals(nameNew)
-            &&grayPrice.equals(grayPriceNew)
-            &&redPrice.equals(redPriceNew)
-            &&isStrikethrough
-            &&isStrikethroughNew
-            &&isGray
-            &&isGrayNew
-            &&isFontWeight
-            &&isFontWeightNew
-            &&isFontSize
-            &&isFontSizeNew
-            &&isRed
-            &&isRedNew){
+            && grayPrice.equals(grayPriceNew)
+            && redPrice.equals(redPriceNew)
+            && isStrikethrough
+            && isStrikethroughNew
+            && isGray
+            && isGrayNew
+            && isFontWeight
+            && isFontWeightNew
+            && isFontSize
+            && isFontSizeNew
+            && isRed
+            && isRedNew) {
       return true;
     } else return false;
+  }
+
+  public AccountData generateRandomAccount() {
+    AccountData account = new AccountData();
+    Random random = new Random();
+    // Генерация случайного имени
+    String[] FIRST_NAMES = {"John", "Emma", "Michael", "Sophia", "William", "Olivia", "James", "Ava", "Benjamin", "Isabella"};
+    String[] LAST_NAMES = {"Smith", "Johnson", "Brown", "Jones", "Garcia", "Miller", "Davis", "Martinez", "Taylor", "Thomas"};
+
+    // Генерация случайных данных для полей модели Account
+    account.setTaxId("123456789");
+    account.setCompany("Random Company");
+    account.setFirstName(FIRST_NAMES[random.nextInt(FIRST_NAMES.length)]);
+    account.setLastName(LAST_NAMES[random.nextInt(LAST_NAMES.length)]);
+    account.setAddress1(random.nextInt(100) + " Random St");
+    account.setAddress2("Apt " + random.nextInt(1000));
+    account.setPostcode(String.valueOf(random.nextInt(90000) + 10000));
+    account.setCity("Random City");
+    account.setEmail("random" + random.nextInt(1000) + "@example.com");
+    account.setPhone("+1234567890");
+    account.setPassword("randompassword123");
+    account.setPasswordConfirm("randompassword123");
+
+    // Генерация случайного выбора для страны и зоны
+    // Генерация случайной страны - после переделано в US
+    account.setCountry("United States");
+
+    // Если страна - Канада или Соединенные Штаты, выбираем случайную зону
+    if (account.getCountry().equals("Canada") || account.getCountry().equals("United States")) {
+      account.setZone(selectRandomZone(driver));
+    }
+
+    return account;
+  }
+
+
+  //Заполнение рандомной старны (не пригодилось по заданию)
+  public static String selectRandomCountry(WebDriver driver) {
+    WebElement countrySelect = driver.findElement(By.name("country_code"));
+    Select countryDropdown = new Select(countrySelect);
+    List<WebElement> options = countryDropdown.getOptions();
+    // Выбираем случайную страну, исключая пустой элемент "-- Select --"
+    Random random = new Random();
+    int index = random.nextInt(options.size() - 1) + 1;
+    return options.get(index).getText();
+  }
+
+  //Заполнение рандомного штата для страны United States
+  public static String selectRandomZone(WebDriver driver) {
+    //Выбираем страну United States
+    WebElement countrySelect = driver.findElement(By.name("country_code"));
+    Select countryDropdown = new Select(countrySelect);
+    countryDropdown.selectByValue("US");
+    WebElement zoneSelect = driver.findElement(By.cssSelector("select[name='zone_code']"));
+    Select zoneDropdown = new Select(zoneSelect);
+    List<WebElement> options = zoneDropdown.getOptions();
+
+    // Выбираем случайную зону, исключая пустой элемент "-- Select --"
+    Random random = new Random();
+    int index = random.nextInt(options.size() - 1) + 1;
+    return options.get(index).getText();
+  }
+
+  public void fillContactForm(AccountData accountData) {
+    type(By.name("tax_id"), accountData.getTaxId());
+    type(By.name("company"), accountData.getCompany());
+    type(By.name("firstname"), accountData.getFirstName());
+    type(By.name("lastname"), accountData.getLastName());
+    type(By.name("address1"), accountData.getAddress1());
+    type(By.name("address2"), accountData.getAddress2());
+    type(By.name("postcode"), accountData.getPostcode());
+    type(By.name("city"), accountData.getCity());
+
+    Select countryDropdown = new Select(driver.findElement(By.name("country_code")));
+    countryDropdown.selectByVisibleText("United States");
+
+    // Если страна - Канада или Соединенные Штаты, заполняем зону
+    if (accountData.getCountry().equals("Canada") || accountData.getCountry().equals("United States")) {
+      WebElement zoneSelect = driver.findElement(By.cssSelector("select[name='zone_code']"));
+      Select zoneDropdown = new Select(zoneSelect);
+      zoneDropdown.selectByVisibleText(accountData.getZone());
+    }
+    type(By.name("email"), accountData.getEmail());
+    type(By.name("phone"), accountData.getPhone());
+    type(By.name("password"), accountData.getPassword());
+    type(By.name("confirmed_password"), accountData.getPasswordConfirm());
+    click(By.name("create_account"));
+  }
+
+  public void goToCreatePage(){
+    driver.get("http://localhost/litecart/en/create_account");
+  }
+
+
+  public void logout(){
+    click(By.cssSelector("a[href^=\"http://localhost/litecart/en/logout\"]"));
+  }
+
+  public boolean login(AccountData accountData){
+    type(By.name("email"), accountData.getEmail());
+    type(By.name("password"), accountData.getPassword());
+    click(By.name("login"));
+    return driver.findElement(By.className("notice")).isDisplayed();
+
   }
 }

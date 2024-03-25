@@ -88,7 +88,7 @@ public class ApplicationManager {
     return adminPageHelper;
   }
 
-  public ShopPageHelper shopPade(){
+  public ShopPageHelper shopPage(){
     return shopPageHelper;
   }
 
