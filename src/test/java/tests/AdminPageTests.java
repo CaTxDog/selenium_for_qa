@@ -2,6 +2,7 @@ package tests;
 
 
 import appmanager.ReplaceCamelCase;
+import model.ProductData;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -27,9 +28,18 @@ public class AdminPageTests extends TestBaseAdmin {
 
   @Test
   public void geoZoneSorted(){
-
     assertTrue(app.adminPage().geoZonesSort());
+  }
 
+  @Test
+  public void createNewProduct(){
+    app.adminPage().goToCreatePage();
+    ProductData product = app.adminPage().generateRandomProduct();
+    app.adminPage().fillNewGeneralProduct(product);
+    app.adminPage().fillNewInformationProduct(product);
+    app.adminPage().fillNewPricesProduct(product);
+    app.adminPage().saveNewProduct();
+    assertTrue(app.adminPage().checkSaveProduct(product));
   }
 
 }

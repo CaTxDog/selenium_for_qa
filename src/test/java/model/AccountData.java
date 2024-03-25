@@ -5,6 +5,16 @@ public class AccountData {
   private  String company;
   private  String firstName;
   private  String lastName;
+  private  String address1;
+  private  String address2;
+  private  String postcode;
+  private  String city;
+  private  String email;
+  private  String phone;
+  private  String password;
+  private  String passwordConfirm;
+  private  String country;
+  private  String zone;
 
   public String getTaxId() {
     return taxId;
@@ -118,15 +128,6 @@ public class AccountData {
     this.passwordConfirm = passwordConfirm;
   }
 
-  private  String address1;
-  private  String address2;
-  private  String postcode;
-  private  String city;
-  private  String email;
-  private  String phone;
-  private  String password;
-  private  String passwordConfirm;
-  private  String country;
-  private  String zone;
+
 
 }

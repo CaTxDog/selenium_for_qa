@@ -1,14 +1,18 @@
 package appmanager;
 
+import model.AccountData;
+import model.ProductData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -227,5 +231,64 @@ public class AdminPageHelper extends HelperBase{
       driver.navigate().back();
     }
     return true;
+  }
+
+  public ProductData generateRandomProduct() {
+    ProductData product = new ProductData();
+    Random random = new Random();
+    product.setName("Awesome Duck "+(random.nextInt(900)+100));
+    product.setCode("test"+(random.nextInt(900)+100));
+    product.setQuantity(String.valueOf(random.nextInt(90) + 10));
+    product.setLogo(new File("src\\test\\resources\\logo.png"));
+    product.setShortDescription("Awesome Duck");
+    product.setDescription("Homo homini lupus est");
+    product.setPurchasePrice(String.valueOf(random.nextInt(90) + 10));
+    product.setPriceUSD(String.valueOf(random.nextInt(90) + 10));
+    return product;
+  }
+
+
+  public void fillNewGeneralProduct(ProductData product){
+    WebElement enabledRadio = driver.findElement(By.cssSelector("input[name='status'][value='1']"));
+    if (!enabledRadio.isSelected()) {
+      enabledRadio.click();
+    }
+    type(By.name("name[en]"),product.getName());
+    type(By.name("code"),product.getCode());
+    click(By.cssSelector("input[type='checkbox'][value='1']"));
+    click(By.cssSelector("input[type='checkbox'][value='1-3']"));
+    type(By.name("quantity"),product.getQuantity());
+    attach(By.name("new_images[]"),product.getLogo());
+  }
+  public void fillNewInformationProduct(ProductData product){
+    click(By.linkText("Information"));
+    Select countryDropdown = new Select(driver.findElement(By.name("manufacturer_id")));
+    countryDropdown.selectByValue("1");
+    type(By.name("short_description[en]"),product.getShortDescription());
+    type(By.cssSelector("[contenteditable=true]"),product.getDescription());
+  }
+
+    public void fillNewPricesProduct(ProductData product){
+    click(By.linkText("Prices"));
+    type(By.name("purchase_price"), product.getPurchasePrice());
+    type(By.name("prices[USD]"), product.getPriceUSD());
+  }
+
+  public boolean checkSaveProduct(ProductData product) {
+    List<WebElement> nameElements = driver.findElements(By.xpath("//table[@class='dataTable']//td[3]"));
+    List<String> names = new ArrayList<>();
+    for (WebElement element : nameElements) {
+      names.add(element.getText());
+    }
+    return names.stream().anyMatch(name -> name.equals(product.getName()));
+  }
+
+  public void saveNewProduct(){
+    click(By.name("save"));
+  }
+
+  public void goToCreatePage(){
+    click(By.cssSelector("#box-apps-menu > li:nth-child(2)"));
+    click(By.cssSelector("#content > div:nth-child(2) > a:nth-child(2)"));
   }
 }
