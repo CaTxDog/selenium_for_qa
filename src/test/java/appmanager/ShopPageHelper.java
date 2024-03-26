@@ -6,8 +6,11 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +21,7 @@ public class ShopPageHelper extends HelperBase {
   public ShopPageHelper(WebDriver driver) {
     super(driver);
   }
+  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
   public boolean isElementPresent(By locator) {
     try {
@@ -200,11 +204,14 @@ public class ShopPageHelper extends HelperBase {
   }
 
   //Заполнение рандомного штата для страны United States
-  public static String selectRandomZone(WebDriver driver) {
+  public String selectRandomZone(WebDriver driver) {
     //Выбираем страну United States
-    WebElement countrySelect = driver.findElement(By.name("country_code"));
-    Select countryDropdown = new Select(countrySelect);
-    countryDropdown.selectByValue("US");
+    click(By.className("select2-selection__arrow"));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(), 'United States')]")));
+    // Выбираем результат поиска "United States"
+    WebElement result = driver.findElement(By.xpath("//li[contains(text(), 'United States')]"));
+    result.click();
+
     WebElement zoneSelect = driver.findElement(By.cssSelector("select[name='zone_code']"));
     Select zoneDropdown = new Select(zoneSelect);
     List<WebElement> options = zoneDropdown.getOptions();
