@@ -21,6 +21,7 @@ public class ShopPageHelper extends HelperBase {
   public ShopPageHelper(WebDriver driver) {
     super(driver);
   }
+
   WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
   public boolean isElementPresent(By locator) {
@@ -232,8 +233,8 @@ public class ShopPageHelper extends HelperBase {
     type(By.name("postcode"), accountData.getPostcode());
     type(By.name("city"), accountData.getCity());
 
-    Select countryDropdown = new Select(driver.findElement(By.name("country_code")));
-    countryDropdown.selectByVisibleText("United States");
+    //Select countryDropdown = new Select(driver.findElement(By.name("country_code")));
+    //countryDropdown.selectByVisibleText("United States");
 
     // Если страна - Канада или Соединенные Штаты, заполняем зону
     if (accountData.getCountry().equals("Canada") || accountData.getCountry().equals("United States")) {
@@ -248,20 +249,68 @@ public class ShopPageHelper extends HelperBase {
     click(By.name("create_account"));
   }
 
-  public void goToCreatePage(){
+  public void goToCreatePage() {
     driver.get("http://localhost/litecart/en/create_account");
   }
 
 
-  public void logout(){
+  public void logout() {
     click(By.cssSelector("a[href^=\"http://localhost/litecart/en/logout\"]"));
   }
 
-  public boolean login(AccountData accountData){
+  public boolean login(AccountData accountData) {
     type(By.name("email"), accountData.getEmail());
     type(By.name("password"), accountData.getPassword());
     click(By.name("login"));
     return driver.findElement(By.className("notice")).isDisplayed();
-
   }
+
+  public boolean waitItems() {
+    //Задаем длительность ожидания
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    //Указываем колличество повторений, для добавления товара в корзину. Счет ведем с 1 для сверки количества эллементов в таблице
+    for (int i = 1; i < 4; i++) {
+      driver.get("http://localhost/litecart/en/");
+      //Тут не самые красивые селекторы, но время 5 утра и решил не заморачиваться, так как нужен просто первый элемент
+      click(By.cssSelector("#box-most-popular > div:nth-child(2) > ul:nth-child(1) > li:nth-child(1)"));
+      if (!driver.findElements(By.name("options[Size]")).isEmpty()) {
+        // Если есть опция выбора размера, выбираем первое доступное значение
+        WebElement sizeDropdown = driver.findElement(By.name("options[Size]"));
+        Select sizeSelect = new Select(sizeDropdown);
+        sizeSelect.selectByIndex(1); // Выбор первого доступного размера
+      }
+      WebElement addToCartButton = driver.findElement(By.name("add_cart_product"));
+      addToCartButton.click();
+      wait.until(ExpectedConditions.textToBePresentInElementLocated(By.className("quantity"), String.valueOf(i)));
+      WebElement quantityElement = driver.findElement(By.className("quantity"));
+      String quantityText = quantityElement.getText();
+      // Проверяем, что количество товаров в корзине равно ожидаемому значению
+      if (!quantityText.equals(String.valueOf(i))) {
+        return false;
+      }
+    }
+    // Переходим в корзину
+    driver.get("http://localhost/litecart/en/checkout");
+    // Удалениен в корзине
+    while (true) {
+      // Проверка наличия таблицы
+      List<WebElement> tableRows = driver.findElements(By.cssSelector("#order_confirmation-wrapper .item"));
+      if (tableRows.isEmpty()) {
+        break;
+      }
+      // Нажатие на первый элемент в shortcuts
+      List<WebElement> shortcuts = driver.findElements(By.cssSelector(".shortcuts .shortcut"));
+      if (!shortcuts.isEmpty()) {
+        shortcuts.getFirst().click();
+      }
+      // Ожидание появления кнопки Remove
+      WebElement removeButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button[value*='Remove']")));
+      // Нажатие на кнопку Remove
+      removeButton.click();
+      // Ожидание изменения количества записей в таблице. 0 запись является заголовком таблицы, поэтому проверяем с 1ой.
+      wait.until(ExpectedConditions.stalenessOf(tableRows.get(1)));
+    }
+    return true;
+  }
+
 }

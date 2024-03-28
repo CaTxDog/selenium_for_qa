@@ -62,17 +62,17 @@ public class ApplicationManager {
     } else if (browser.equals(Browser.EDGE.browserName())){
       driver = new EdgeDriver();
     }
-    driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-
     if (admin==true){
       driver.get(properties.getProperty("web.adminUrl"));
       sessionHelper = new SessionHelper(driver);
       sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
       adminPageHelper = new AdminPageHelper(driver);
+      driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     } else {
       driver.get(properties.getProperty("web.shopUrl"));
       sessionHelper = new SessionHelper(driver);
       shopPageHelper = new ShopPageHelper(driver);
+      driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
   }
 

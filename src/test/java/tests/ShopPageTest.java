@@ -44,4 +44,9 @@ public class ShopPageTest extends TestBaseShop{
     assertTrue(app.shopPage().login(contact));
     app.shopPage().logout();
   }
+
+  @Test
+  public void waitTest(){
+    assertTrue(app.shopPage().waitItems());
+  }
 }

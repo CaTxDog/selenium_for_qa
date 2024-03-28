@@ -1,6 +1,5 @@
 package appmanager;
 
-import model.AccountData;
 import model.ProductData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -247,7 +246,6 @@ public class AdminPageHelper extends HelperBase{
     return product;
   }
 
-
   public void fillNewGeneralProduct(ProductData product){
     WebElement enabledRadio = driver.findElement(By.cssSelector("input[name='status'][value='1']"));
     if (!enabledRadio.isSelected()) {
@@ -260,6 +258,7 @@ public class AdminPageHelper extends HelperBase{
     type(By.name("quantity"),product.getQuantity());
     attach(By.name("new_images[]"),product.getLogo());
   }
+
   public void fillNewInformationProduct(ProductData product){
     click(By.linkText("Information"));
     Select countryDropdown = new Select(driver.findElement(By.name("manufacturer_id")));
