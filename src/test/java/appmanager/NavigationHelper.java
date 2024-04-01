@@ -23,19 +23,19 @@ public class NavigationHelper extends HelperBase {
   }
 
   // Метод для открытия ссылки в новой вкладке
-  public static void openNewTab(WebDriver driver, String url) {
+  public void openNewTab(WebDriver driver, String url) {
     ((JavascriptExecutor)driver).executeScript("window.open(arguments[0])", url);
   }
 
   // Метод для переключения на новую вкладку
-  public static void switchToNewTab(WebDriver driver) {
+  public void switchToNewTab(WebDriver driver) {
     Set<String> handles = driver.getWindowHandles();
     List<String> tabs = new ArrayList<>(handles);
     driver.switchTo().window(tabs.getLast());
   }
 
   // Метод для переключения на основную вкладку
-  public static void switchToMainTab(WebDriver driver) {
+  public void switchToMainTab(WebDriver driver) {
     Set<String> handles = driver.getWindowHandles();
     List<String> tabs = new ArrayList<>(handles);
     driver.switchTo().window(tabs.getFirst());

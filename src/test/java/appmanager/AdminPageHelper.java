@@ -1,17 +1,15 @@
 package appmanager;
 
 import model.ProductData;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.time.Duration;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -289,5 +287,45 @@ public class AdminPageHelper extends HelperBase{
   public void goToCreatePage(){
     click(By.cssSelector("#box-apps-menu > li:nth-child(2)"));
     click(By.cssSelector("#content > div:nth-child(2) > a:nth-child(2)"));
+  }
+
+  public boolean checkNewTab(){
+    // Переходим сразу на страницу редактирования
+    driver.get("http://localhost/litecart/admin/?app=countries&doc=edit_country");
+    // Найти все элементы в виде ссылок с иконкой
+    List<WebElement> externalLinks = driver.findElements(By.className("fa-external-link"));
+
+    // Проход по каждой ссылке
+    for (WebElement link : externalLinks) {
+      // Получаем идентификатор текущей вкладки
+      String mainWindow = driver.getWindowHandle();
+
+      // Кликаем на ссылку
+      link.click();
+
+      // Ожидание появления нового окна (вкладки)
+      WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+      wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+
+      // Получаем идентификатор всех открытых вкладок
+      Set<String> allWindows = driver.getWindowHandles();
+
+      // Проверяем, что новая вкладка открылась
+      if (allWindows.size() < 2) {
+        return false;
+      }
+
+      // Закрываем вкладку
+      for (String windowHandle : allWindows) {
+        if (!windowHandle.equals(mainWindow)) {
+          driver.switchTo().window(windowHandle);
+          driver.close();
+        }
+      }
+
+      // Возвращаемся к основной вкладке
+      driver.switchTo().window(mainWindow);
+    }
+   return true;
   }
 }

@@ -42,4 +42,8 @@ public class AdminPageTests extends TestBaseAdmin {
     assertTrue(app.adminPage().checkSaveProduct(product));
   }
 
+  @Test
+  public void newTab(){
+    assertTrue(app.adminPage().checkNewTab());
+  }
 }
