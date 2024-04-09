@@ -3,6 +3,8 @@ package appmanager;
 import model.ProductData;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -11,7 +13,7 @@ import java.io.File;
 import java.time.Duration;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AdminPageHelper extends HelperBase{
 
@@ -327,5 +329,47 @@ public class AdminPageHelper extends HelperBase{
       driver.switchTo().window(mainWindow);
     }
    return true;
+  }
+
+  public boolean getBrowserLog(){
+    driver.get("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1");
+    //Получаем список строк в таблице dataTable
+    List<WebElement> links = driver.findElements(By.className("row"));
+
+    // Проход по всем строкам и в случае определения, что это продукт - сохранение ссылки на него
+    List<String> productLinks = new ArrayList<>();
+    for (WebElement link : links) {
+      if (link.findElement(By.xpath("td[4]")).getAttribute("style").isEmpty()){
+        continue;
+      }
+      WebElement productLink = link.findElement(By.xpath("td[3]/a"));
+      productLinks.add(productLink.getAttribute("href"));
+      }
+
+    // Проход по всем найденным ссылкам и нажатие на них
+    for (String link : productLinks) {
+      driver.get(link);
+
+      // Получение логов браузера
+      LogEntries logs = driver.manage().logs().get("browser");
+
+      // Проверка наличия записей в логах
+      if (!logs.getAll().isEmpty()) {
+        // Вывод сообщения о наличии записей в консоли браузера
+        System.out.println("Найдены записи в консоли браузера:");
+
+        // Вывод всех записей в консоль
+        for (LogEntry entry : logs) {
+          System.out.println(entry.getMessage());
+        }
+
+        // Остановка программы
+        return false;
+      }
+
+      // Возврат на предыдущую страницу
+      driver.navigate().back();
+    }
+    return true;
   }
 }

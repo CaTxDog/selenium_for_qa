@@ -50,7 +50,7 @@ public class ApplicationManager {
     if (browser.equals(Browser.FIREFOX.browserName())) {
       ProfilesIni profile = new ProfilesIni();
       FirefoxProfile prof = profile.getProfile("fortest");
-      prof.setPreference("browser.download.dir","C:\\Developer\\selenium_for_qa");
+      prof.setPreference("browser.download.dir","D:\\Developer\\selenium_for_qa");
       prof.setPreference("browser.download.folderList", 2);
       FirefoxOptions opt = new FirefoxOptions();
       opt.setBrowserVersion("nightly");

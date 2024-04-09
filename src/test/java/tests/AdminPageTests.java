@@ -46,4 +46,9 @@ public class AdminPageTests extends TestBaseAdmin {
   public void newTab(){
     assertTrue(app.adminPage().checkNewTab());
   }
+
+  @Test
+  public void clearBrowserLog(){
+    assertTrue(app.adminPage().getBrowserLog());
+  }
 }
